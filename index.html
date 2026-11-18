@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script>(function(firebaseConfig, initialAuthToken, appId) { window.__firebase_config = firebaseConfig; window.__initial_auth_token = initialAuthToken; window.__app_id = appId; })("\n{\n  \"apiKey\": \"AIzaSyCqyCcs2R2e7AegGjvFAwG98wlamtbHvZY\",\n  \"authDomain\": \"bard-frontend.firebaseapp.com\",\n  \"projectId\": \"bard-frontend\",\n  \"storageBucket\": \"bard-frontend.firebasestorage.app\",\n  \"messagingSenderId\": \"175205271074\",\n  \"appId\": \"1:175205271074:web:2b7bd4d34d33bf38e6ec7b\"\n}\n","eyJhbGciOiJSUzI1NiIsImtpZCI6IjhkZDUxMTBhMGIwYjdkNDJhNDM2ODg4MzdmODg5M2M2OTNhM2RhNDMiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiJmaXJlYmFzZS1hZG1pbnNkay1mYnN2Y0BiYXJkLWZyb250ZW5kLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwiYXVkIjoiaHR0cHM6XC9cL2lkZW50aXR5dG9vbGtpdC5nb29nbGUuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCIsInVpZCI6IjE2NjY2ODMyMTQ3NTI5ODYyMTg2IiwiYXBwSWQiOiJmZmZhZjdmNmNhODctcnVlZGEtcHJlZ3VudGFhcy1hcHAppNzYxIiwiaWVhIjoiZmlyZWJhc2UtYWRtaW5zZGt-ZnJldmNAYmFyZC1mcm9udGVuZC5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsICJleHAiOjE3NTA2OTI3NjMsImlhdCI6MTc1MDY4OTE2MywiYWxnIjoiUlMyNTYifQ.ojm18ERILKHlhMPUDUZj0LeWAQ9GZUoLkqiX3In7ys1Lf7beNPMmAr_k-8gZVl96h_fQJO6Da-tY1W0w7c_Q-4LztQ1h9go3jXlmBUgT7NpuOl6S4xmd5BzlmAt4IhlbwnUJ__16xx6KJjdFVj6wKLz5RrkuSLMIESplivMvlAL69fIRwVRnPB_M01f6FBGJkfXPTnTCndGwA_eVdYoiXjyLGWp4-gEMlVZUNnC51XrccVL4BQd4rDiuCdn-Q_uvwXuv3MeJuGqdbKixQb2zqufrLpZqJpg_gKXJTDnNZxXV2btvOGtoIiiNASq9nXIs78enJKd4U86usrU35zysg","fffaf7f6ca87-rueda-preguntas-app-761")</script><script>(function() { if (window.firebaseAuthBridgeScriptLoaded) { return; } window.firebaseAuthBridgeScriptLoaded = true; let nextTokenPromiseId = 0; const pendingTokenPromises = {}; window.addEventListener('message', function(event) { const messageData = event.data; if (messageData && messageData.type === 'RESOLVE_NEW_FIREBASE_TOKEN') { const { success, token, error, promiseId } = messageData ?? {}; if (pendingTokenPromises[promiseId]) { if (success) { pendingTokenPromises[promiseId].resolve(token); } else { pendingTokenPromises[promiseId].reject(new Error(error || 'Token refresh failed from host.')); } delete pendingTokenPromises[promiseId]; } } }); window.requestNewFirebaseToken = function() { const currentPromiseId = nextTokenPromiseId++; const promise = new Promise((resolve, reject) => { pendingTokenPromises[currentPromiseId] = { resolve, reject }; }); if (window.parent && window.parent !== window) { window.parent.postMessage({ type: 'REQUEST_NEW_FIREBASE_TOKEN', promiseId: currentPromiseId }, '*'); } else { pendingTokenPromises[currentPromiseId].reject(new Error('No parent window to request token from.')); delete pendingTokenPromises[currentPromiseId]; } return promise; };})();</script><script>let realOriginalGetUserMedia = null;if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) { realOriginalGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);} (function() { if (navigator.mediaDevices && navigator.mediaDevices.__proto__) { try { Object.defineProperty(navigator.mediaDevices.__proto__, 'getUserMedia', { get: function() { return undefined; }, configurable: false }); } catch (error) { console.error("Error defining prototype getter:", error); } }})(); (function() { let originalGetUserMedia = realOriginalGetUserMedia; const pendingMediaResolvers = {}; let nextMediaPromiseId = 0; function interceptGetUserMedia() { if (navigator.mediaDevices) { Object.defineProperty(navigator.mediaDevices, 'getUserMedia', { value: function(constraints) { const mediaPromiseId = nextMediaPromiseId++; const promise = new Promise((resolve, reject) => { pendingMediaResolvers[mediaPromiseId] = (granted) => { delete pendingMediaResolvers[mediaPromiseId]; if (granted) { if (originalGetUserMedia) { originalGetUserMedia(constraints).then(resolve).catch(reject); } else { reject(new Error("Original getUserMedia not available.")); } } else { reject(new DOMException('Permission denied', 'NotAllowedError')); } }; }); window.parent.postMessage({ type: 'requestMediaPermission', constraints: constraints, promiseId: mediaPromiseId, }, '*'); return promise; }, writable: false, configurable: false }); } } interceptGetUserMedia(); const observer = new MutationObserver(function(mutationsList, observer) { for (const mutation of mutationsList) { if (mutation.type === 'reconfigured' && mutation.name === 'getUserMedia' && mutation.object === navigator.mediaDevices) { interceptGetUserMedia(); } else if (mutation.type === 'attributes' && mutation.attributeName === 'getUserMedia' && mutation.target === navigator.mediaDevices) { interceptGetUserMedia(); } else if (mutation.type === 'childList' && mutation.addedNodes) { mutation.addedNodes.forEach(node => { if (node === navigator.mediaDevices) { interceptGetUserMedia(); } }); } } }); window.addEventListener('message', function(event) { if (event.data) { if (event.data.type === 'resolveMediaPermission') { const { promiseId, granted } = event.data; if (pendingMediaResolvers[promiseId]) { pendingMediaResolvers[promiseId](granted); } } } });})();</script><script>((function(modelInformation) { const originalFetch = window.fetch; let googleLlmBaseApiUrls = [ 'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.textModelName + ':streamGenerateContent', 'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.textModelName + ':generateContent', 'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageModelName + ':predict', 'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageModelName + ':predictLongRunning', 'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.videoModelName + ':predict', 'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.videoModelName + ':predictLongRunning', ]; modelInformation.deprecatedTextModelNames.forEach((modelName) => { googleLlmBaseApiUrls.push( 'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent', 'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent', ); }); const pendingFetchResolvers = {}; let nextPromiseId = 0; function handleStringInput(input, optionsArgument) { const actualUrl = input; const fetchCallArgs = [actualUrl, optionsArgument]; const effectiveOptions = optionsArgument || {}; const bodyForApiKeyCheck = effectiveOptions.body; const bodyForPostMessage = effectiveOptions.body; return { actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage }; } function handleRequestInput(input, optionsArgument) { const actualUrl = input.url; const fetchCallArgs = [input, optionsArgument]; const effectiveOptions = { method: input.method, headers: new Headers(input.headers) }; let bodyForApiKeyCheck; let bodyForPostMessage; if (optionsArgument) { if (optionsArgument.method) effectiveOptions.method = optionsArgument.method; if (optionsArgument.headers) effectiveOptions.headers = new Headers(optionsArgument.headers); if ('body' in optionsArgument) { bodyForApiKeyCheck = optionsArgument.body; bodyForPostMessage = optionsArgument.body; } else { bodyForApiKeyCheck = undefined; bodyForPostMessage = input.body; } } else { bodyForApiKeyCheck = undefined; bodyForPostMessage = input.body; } return { actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage }; } window.fetch = function(input, optionsArgument) { let actualUrl; let fetchCallArgs; let effectiveOptions = {}; let bodyForApiKeyCheck; let bodyForPostMessage; if (typeof input === 'string') { ({actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage} = handleStringInput(input, optionsArgument)); } else if (input instanceof Request) { ({actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage} = handleRequestInput(input, optionsArgument)); } else { return originalFetch.apply(window, [input, optionsArgument]); } effectiveOptions.method = effectiveOptions.method || 'GET'; if (!effectiveOptions.headers) { effectiveOptions.headers = new Headers(); } if (typeof actualUrl === 'string' && googleLlmBaseApiUrls.some((url) => actualUrl.startsWith(url))) { let apiKeyIsNull = true; const regex = new RegExp("models/([^:]+)"); const modelNameMatch = actualUrl.match(regex); const modelName = modelNameMatch ? modelNameMatch[1] : 'unspecified'; try { const urlObject = new URL(actualUrl); const apiKeyParam = urlObject.searchParams.get('key'); if (apiKeyParam) { apiKeyIsNull = false; } } catch (e) {} if (apiKeyIsNull && effectiveOptions.headers) { const h = new Headers(effectiveOptions.headers); const apiKeyHeaderValue = h.get('X-API-Key') || h.get('x-api-key'); if (apiKeyHeaderValue) { apiKeyIsNull = false; return originalFetch.apply(window, fetchCallArgs); } } if (apiKeyIsNull && effectiveOptions.method && ['POST', 'PUT', 'PATCH'].includes(effectiveOptions.method.toUpperCase()) && typeof bodyForApiKeyCheck === 'string') { try { const bodyData = JSON.parse(bodyForApiKeyCheck); if (bodyData && bodyData.apiKey) { apiKeyIsNull = false; return originalFetch.apply(window, fetchCallArgs); } } catch (e) {} } if(apiKeyIsNull) { const promiseId = nextPromiseId++; const promise = new Promise((resolve) => { pendingFetchResolvers[promiseId] = (resolvedResponse) => { delete pendingFetchResolvers[promiseId]; resolve(resolvedResponse); }; }); let serializedBodyForPostMessage; if (typeof bodyForPostMessage === 'string' || bodyForPostMessage == null) { serializedBodyForPostMessage = bodyForPostMessage; } else if (bodyForPostMessage instanceof ReadableStream) { serializedBodyForPostMessage = null; } else { try { serializedBodyForPostMessage = JSON.stringify(bodyForPostMessage); } catch (e) { serializedBodyForPostMessage = null; } } const messageOptions = { method: effectiveOptions.method, headers: Object.fromEntries(new Headers(effectiveOptions.headers).entries()), body: serializedBodyForPostMessage }; window.parent.postMessage({ type: 'requestFetch', url: actualUrl, modelName: modelName, options: messageOptions, promiseId: promiseId, }, '*'); return promise; } return originalFetch.apply(window, fetchCallArgs); } return originalFetch.apply(window, fetchCallArgs); }; window.addEventListener('message', function(event) { if (event.data && event.data.type === 'resolveFetch') { const { promiseId, response } = event.data; if (pendingFetchResolvers[promiseId]) { try { const reconstructedResponse = new Response(response.body, { status: response.status, statusText: response.statusText, headers: new Headers(response.headers), }); pendingFetchResolvers[promiseId](reconstructedResponse); } catch (error) { pendingFetchResolvers[promiseId](new Response(null, { status: 500, statusText: "Interceptor Response Reconstruction Error" })); } } } });}))({"textModelName":"gemini-2.5-flash-preview-04-17","imageModelName":"imagen-3.0-generate-002","videoModelName":"veo-2.0-generate-001","deprecatedTextModelNames":["gemini-2.0-flash"]})</script><script>(function() { const originalConsoleLog = console.log; const originalConsoleError = console.error; function getErrorObject(errorEventOrReason) { if (errorEventOrReason instanceof Error) { return { message: errorEventOrReason.message, name: errorEventOrReason.name, stack: errorEventOrReason.stack, }; } try { return { message: JSON.stringify(errorEventOrReason), name: 'UnknownErrorType', stack: null, }; } catch (e) { return { message: String(errorEventOrReason), name: 'UnknownErrorTypeNonStringifiable', stack: null, }; } } function stringifyArgs(args) { return args .map((arg) => { if (arg instanceof Error) { const {message, stack} = arg; return `Error: ${message}${stack ? ('\nStack: ' + stack) : ''}`; } if (typeof arg === 'object' && arg !== null) { try { return JSON.stringify(arg); } catch (error) { return '[Circular Object]'; } } else { return String(arg); } }) .join(' '); } console.log = function(...args) { const logString = stringifyArgs(args); window.parent.postMessage({ type: 'log', message: logString }, '*'); originalConsoleLog.apply(console, args); }; console.error = function(...args) { let errorData; if (args.length > 0 && args[0] instanceof Error) { const err = args[0]; errorData = { type: 'error', source: 'CONSOLE_ERROR', ...getErrorObject(err), rawArgsString: stringifyArgs(args.slice(1)), timestamp: new Date().toISOString(), }; } else { errorData = { type: 'error', source: 'CONSOLE_ERROR', message: stringifyArgs(args), name: 'ConsoleLoggedError', stack: null, timestamp: new Date().toISOString(), }; } window.parent.postMessage(errorData, '*'); originalConsoleError.apply(console, args); }; window.addEventListener('error', function(event) { const errorDetails = event.error ? getErrorObject(event.error) : { message: event.message, name: 'GlobalError', stack: null, filename: event.filename, lineno: event.lineno, colno: event.colno, }; window.parent.postMessage({ type: 'error', source: 'global', ...errorDetails, message: errorDetails.message || event.message, timestamp: new Date().toISOString(), }, '*'); }); window.addEventListener('unhandledrejection', function(event) { const errorDetails = getErrorObject(event.reason); window.parent.postMessage({ type: 'error', source: 'unhandledrejection', ...errorDetails, message: errorDetails.message || 'Unhandled Promise Rejection', timestamp: new Date().toISOString(), }, '*'); });})();</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RULETA FERIA DE CIENCIAS - NTICx Y ED. FÍSICA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow: auto;
+        }
+        .game-container {
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            padding: 30px;
+            text-align: center;
+            max-width: 950px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            border: 3px solid #dc2626;
+        }
+        .wheel-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            transition: transform 4s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        .arrow {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 30px solid #1e293b;
+            z-index: 10;
+        }
+        .button {
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+        .btn-primary {
+            background-color: #dc2626;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #b91c1c;
+        }
+        .btn-secondary {
+            background-color: #0057b8;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #004494;
+        }
+        .btn-tertiary {
+            background-color: #ea580c;
+            color: white;
+        }
+        .btn-tertiary:hover {
+            background-color: #c2410c;
+        }
+        .btn-neutral {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+        .btn-neutral:hover {
+            background-color: #c7c7c7;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            cursor: pointer;
+        }
+
+        .question-section, .answer-options {
+            background-color: #f1f2f6;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .answer-option {
+            background-color: #ffffff;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            border: 1px solid #ced6e0;
+        }
+        .answer-option:hover {
+            background-color: #f1f2f6;
+        }
+        .answer-option.correct {
+            background-color: #16a34a;
+            color: white;
+            border: 1px solid #15803d;
+        }
+        .answer-option.incorrect {
+            background-color: #dc2626;
+            color: white;
+            border: 1px solid #b91c1c;
+        }
+        .answer-option.selected {
+            border: 2px solid #0057b8;
+            background-color: #e0f2fe;
+        }
+
+        #gameStats {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: left;
+            font-size: 1.1em;
+            color: #ffffff;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-weight: bold;
+        }
+        #gameStats div {
+            flex-basis: 48%;
+            min-width: 150px;
+            text-align: center;
+        }
+        
+        #editButton {
+            display: none; 
+        }
+
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 15px;
+            }
+            .wheel-container {
+                width: 300px;
+                height: 300px;
+            }
+            #gameStats div {
+                flex-basis: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4">
+    <div class="game-container">
+        <h1 id="gameTitle" class="text-3xl md:text-4xl font-bold mb-4 rounded-lg p-3 bg-gradient-to-r from-red-600 via-orange-500 to-blue-700 text-white shadow-md border-b-4 border-red-800">FERIA DE CIENCIAS: NTICx Y ED. FÍSICA</h1>
+
+        <div class="flex flex-col md:flex-row items-center justify-center gap-6">
+            <div class="wheel-section relative">
+                <div class="wheel-container">
+                    <canvas id="wheelCanvas" width="400" height="400"></canvas>
+                    <div class="arrow"></div>
+                </div>
+                <div class="flex flex-wrap justify-center gap-4 mt-6">
+                    <button id="spinButton" class="button btn-primary text-lg">GIRAR RULETA</button>
+                    <button id="editButton" class="button btn-secondary"></button>
+                </div>
+            </div>
+
+            <div class="question-answer-section flex flex-col w-full md:w-1/2 min-h-[350px]">
+                <div id="gameStats" class="bg-gradient-to-r from-blue-700 to-red-600">
+                    <div>Puntaje: <span id="scoreDisplay">0</span></div>
+                    <div>Preguntas: <span id="questionCounter">0</span></div>
+                    <div>Tiempo de Respuesta: <span id="responseTimeDisplay">0.00s</span></div>
+                    <div>Correctas: <span id="correctCountDisplay">0</span></div>
+                    <div>Incorrectas: <span id="incorrectCountDisplay">0</span></div>
+                </div>
+                <div id="questionDisplay" class="question-section text-lg font-semibold text-gray-700 text-left">
+                    ¡Gira la ruleta deportiva para poner a prueba tus conocimientos de NTICx y Educación Física! (EES N° 3)
+                </div>
+                <div id="answerOptions" class="answer-options mt-4 flex flex-col">
+                </div>
+                <button id="checkAnswerButton" class="button btn-tertiary mt-4 hidden">COMPROBAR RESPUESTA</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeEditModal">×</span>
+            <h2 class="text-3xl font-bold mb-6 text-gray-800">Configurar Juego</h2>
+            <div id="passwordSection" class="mb-4">
+                <label for="editPassword" class="block text-gray-700 text-sm font-bold mb-2">Contraseña:</label>
+                <input type="password" id="editPassword" class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 mb-4">
+                <button id="authenticatePassword" class="button btn-secondary w-full">AUTENTICAR</button>
+            </div>
+            <div id="editorContent" class="hidden">
+                <div class="mb-6">
+                    <label for="editGameTitle" class="block text-gray-700 text-sm font-bold mb-2">Título del Juego:</label>
+                    <input type="text" id="editGameTitle" class="shadow appearance-none border rounded-lg w-full py-2 px-3">
+                </div>
+                <h3 class="text-2xl font-bold mb-4 text-gray-800">Secciones de la Ruleta</h3>
+                <div id="sectionsEditor" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"></div>
+                <h3 class="text-2xl font-bold mb-4 text-gray-800">Preguntas y Respuestas</h3>
+                <div class="mb-4">
+                    <label for="selectSectionForQuestions" class="block text-gray-700 text-sm font-bold mb-2">Seleccionar Sección:</label>
+                    <select id="selectSectionForQuestions" class="shadow border rounded-lg w-full py-2 px-3 mb-4"></select>
+                </div>
+                <div id="questionsEditor" class="border border-gray-300 rounded-lg p-4"></div>
+                <button id="managePasswordsButton" class="button btn-tertiary mb-6">GESTIONAR CONTRASEÑAS</button>
+                <div class="mt-6 flex justify-end gap-4">
+                    <button id="saveEditsButton" class="button btn-primary">GUARDAR CONFIGURACIÓN</button>
+                    <button id="downloadEditorConfigButton" class="button btn-neutral">DESCARGAR JUEGO (JSON)</button>
+                    <button id="cancelEditsButton" class="button btn-neutral">CANCELAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="messageModal" class="modal" style="display: none;">
+        <div class="modal-content max-w-sm text-center">
+            <span class="close-button" id="closeMessageModal">×</span>
+            <p id="messageText" class="text-lg font-semibold text-gray-700 mb-4"></p>
+            <button id="messageOkButton" class="button btn-primary mx-auto">OK</button>
+        </div>
+    </div>
+
+    <div id="managePasswordsModal" class="modal" style="display: none;">
+        <div class="modal-content max-w-lg">
+            <span class="close-button" id="closeManagePasswordsModal">×</span>
+            <h2 class="text-3xl font-bold mb-6 text-gray-800">Gestionar Contraseñas</h2>
+            <div class="mb-4">
+                <label for="editGamePasswordInput" class="block text-gray-700 text-sm font-bold mb-2">Contraseña del Editor:</label>
+                <input type="password" id="editGamePasswordInput" class="shadow border rounded-lg w-full py-2 px-3">
+            </div>
+            <div class="mt-6 flex justify-end gap-4">
+                <button id="saveNewPasswordsButton" class="button btn-primary">GUARDAR CONTRASEÑAS</button>
+                <button id="cancelPasswordManagementButton" class="button btn-neutral">CANCELAR</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('wheelCanvas');
+        const ctx = canvas.getContext('2d');
+        const spinButton = document.getElementById('spinButton');
+        const gameTitleElement = document.getElementById('gameTitle');
+        const questionDisplay = document.getElementById('questionDisplay');
+        const answerOptionsContainer = document.getElementById('answerOptions');
+        const checkAnswerButton = document.getElementById('checkAnswerButton');
+
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const questionCounterDisplay = document.getElementById('questionCounter');
+        const responseTimeDisplay = document.getElementById('responseTimeDisplay');
+        const correctCountDisplay = document.getElementById('correctCountDisplay');
+        const incorrectCountDisplay = document.getElementById('incorrectCountDisplay');
+
+        const editModal = document.getElementById('editModal');
+        const closeEditModalButton = document.getElementById('closeEditModal');
+        const passwordSection = document.getElementById('passwordSection');
+        const editPasswordInput = document.getElementById('editPassword');
+        const authenticatePasswordButton = document.getElementById('authenticatePassword');
+        const editorContent = document.getElementById('editorContent');
+        const editGameTitleInput = document.getElementById('editGameTitle');
+        const sectionsEditor = document.getElementById('sectionsEditor');
+        const selectSectionForQuestions = document.getElementById('selectSectionForQuestions');
+        const questionsEditor = document.getElementById('questionsEditor');
+        const saveEditsButton = document.getElementById('saveEditsButton');
+        const downloadEditorConfigButton = document.getElementById('downloadEditorConfigButton');
+        const cancelEditsButton = document.getElementById('cancelEditsButton');
+
+        const messageModal = document.getElementById('messageModal');
+        const messageText = document.getElementById('messageText');
+        const messageOkButton = document.getElementById('messageOkButton');
+
+        const managePasswordsButton = document.getElementById('managePasswordsButton');
+        const managePasswordsModal = document.getElementById('managePasswordsModal');
+        const closeManagePasswordsModalButton = document.getElementById('closeManagePasswordsModal');
+        const editGamePasswordInput = document.getElementById('editGamePasswordInput');
+        const saveNewPasswordsButton = document.getElementById('saveNewPasswordsButton');
+        const cancelPasswordManagementButton = document.getElementById('cancelPasswordManagementButton');
+
+        let EDIT_PASSWORD = "Xx6sd62Vf9&@";
+        let SAVE_PASSWORD = "Xx6sd62Vf9&@";
+        let EXPORT_PASSWORD = "Xx6sd62Vf9&@";
+        let MANAGE_PASSWORDS_PASSWORD = "Xx6sd62Vf9&@";
+
+        let gameTitle = "FERIA DE CIENCIAS: NTICx Y ED. FÍSICA";
+
+        // 6 Porciones con colores deportivos energéticos y alto contraste
+        let wheelData = [
+            {
+                name: "1",
+                theme: "Frecuencia cardíaca, wearables y salud física",
+                color: "#DC2626", // Rojo Deportivo
+                textColor: "#FFFFFF", // Blanco
+                questions: [
+                    {
+                        question: "¿Qué variable fisiológica miden los relojes inteligentes (smartwatches) y bandas deportivas mediante sensores ópticos de luz verde en la muñeca?",
+                        options: [
+                            "El nivel de vitaminas en los huesos.",
+                            "La frecuencia cardíaca (pulsaciones por minuto) y la oxigenación en sangre.",
+                            "La presión atmosférica del estadio."
+                        ],
+                        correct: [1]
+                    }
+                ]
+            },
+            {
+                name: "2",
+                theme: "Energía, hidratación y rendimiento corporal",
+                color: "#FACC15", // Amarillo Neón / Oro
+                textColor: "#000000", // Negro
+                questions: [
+                    {
+                        question: "¿Por qué el sedentarismo frente a pantallas (pasar muchas horas sentado jugando o mirando el celular sin pausas) perjudica el rendimiento físico?",
+                        options: [
+                            "Porque debilita la musculatura postural, reduce la capacidad aeróbica y aumenta la fatiga.",
+                            "Porque los celulares absorben el calcio de los músculos.",
+                            "Porque aumenta la velocidad de reacción de los reflejos."
+                        ],
+                        correct: [0]
+                    }
+                ]
+            },
+            {
+                name: "3",
+                theme: "Tecnología deportiva (VAR, sensores y GPS)",
+                color: "#0057B8", // Azul Olímpico
+                textColor: "#FFFFFF", // Blanco
+                questions: [
+                    {
+                        question: "En el fútbol profesional y otros deportes, ¿cómo funciona la tecnología VAR (Video Assistant Referee) y los sensores en el balón?",
+                        options: [
+                            "Mediante inteligencia artificial que decide sola quién gana el partido.",
+                            "Combinando cámaras de alta velocidad y sensores inerciales que envían datos en milisegundos para asistir al árbitro.",
+                            "Utilizando imanes ocultos debajo del césped de la cancha."
+                        ],
+                        correct: [1]
+                    }
+                ]
+            },
+            {
+                name: "4",
+                theme: "Actividad física al aire libre y geolocalización",
+                color: "#16A34A", // Verde Césped
+                textColor: "#FFFFFF", // Blanco
+                questions: [
+                    {
+                        question: "¿Cómo utilizan los profesores de Educación Física y deportistas los sistemas GPS en chalecos deportivos o aplicaciones móviles?",
+                        options: [
+                            "Para medir la distancia recorrida, la velocidad máxima y las zonas de esfuerzo en la cancha o el barrio.",
+                            "Para reemplazar el entrenamiento físico por simulaciones virtuales.",
+                            "Únicamente para saber el pronóstico del clima de la semana siguiente."
+                        ],
+                        correct: [0]
+                    }
+                ]
+            },
+            {
+                name: "5",
+                theme: "Biomecánica, movimiento y videoanálisis",
+                color: "#F97316", // Naranja Dinámico
+                textColor: "#000000", // Negro
+                questions: [
+                    {
+                        question: "¿Para qué sirve el 'videoanálisis biomecánico' (grabar en cámara lenta con el celular) durante una clase de Educación Física?",
+                        options: [
+                            "Para subir videos editados con filtros a las redes sociales.",
+                            "Para observar la técnica de un salto, lanzamiento o carrera, corregir posturas y mejorar el movimiento.",
+                            "Para calcular el peso corporal exacto de cada estudiante."
+                        ],
+                        correct: [1]
+                    }
+                ]
+            },
+            {
+                name: "6",
+                theme: "Postura, ergonomía y prevención de lesiones",
+                color: "#22D3EE", // Celeste / Cian
+                textColor: "#000000", // Negro
+                questions: [
+                    {
+                        question: "¿Qué es el 'cuello de texto' (text neck), una lesión postural cada vez más frecuente en adolescentes?",
+                        options: [
+                            "Una contractura y sobrecarga en la columna cervical provocada por inclinar la cabeza hacia adelante al mirar el celular durante mucho tiempo.",
+                            "Un calambre en los dedos pulgares por escribir rápido.",
+                            "Una inflamación de las cuerdas vocales por usar audios de WhatsApp."
+                        ],
+                        correct: [0]
+                    }
+                ]
+            }
+        ];
+
+        let currentRotation = 0;
+        let spinning = false;
+        let selectedSectionIndex = -1;
+        let currentQuestionIndex = -1;
+        let userSelectedAnswers = [];
+
+        let score = 0;
+        let questionsAnswered = 0;
+        let correctAnswersOverall = 0;
+        let correctAnswersInRound = 0;
+        let incorrectAnswersInRound = 0;
+        let questionStartTime = 0;
+
+        function showMessage(message) {
+            messageText.textContent = message;
+            messageModal.style.display = 'flex';
+        }
+
+        window.onload = function() {
+            loadGameConfiguration();
+            drawWheel();
+            gameTitleElement.textContent = gameTitle;
+            updateGameStats();
+        };
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'E' || event.key === 'e') {
+                editModal.style.display = 'flex';
+                passwordSection.classList.remove('hidden');
+                editorContent.classList.add('hidden');
+                editPasswordInput.value = '';
+            }
+        });
+
+        function drawWheel() {
+            const numSections = wheelData.length;
+            const arcSize = (2 * Math.PI) / numSections;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < numSections; i++) {
+                const section = wheelData[i];
+                const startAngle = i * arcSize;
+                const endAngle = (i + 1) * arcSize;
+
+                ctx.beginPath();
+                ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, startAngle, endAngle);
+                ctx.lineTo(canvas.width / 2, canvas.height / 2);
+                ctx.closePath();
+                ctx.fillStyle = section.color;
+                ctx.fill();
+                ctx.strokeStyle = '#1e293b';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(canvas.width / 2, canvas.height / 2);
+                ctx.rotate(startAngle + arcSize / 2);
+                ctx.textAlign = 'right';
+                ctx.fillStyle = section.textColor || '#FFFFFF';
+                ctx.font = 'bold 34px Inter';
+                ctx.fillText(section.name, canvas.width / 2 - 40, 12);
+                ctx.restore();
+            }
+        }
+
+        spinButton.addEventListener('click', () => {
+            if (spinning) return;
+            spinning = true;
+            spinButton.disabled = true;
+
+            questionDisplay.textContent = "¡Girando la ruleta deportiva...!";
+            answerOptionsContainer.innerHTML = "";
+            checkAnswerButton.classList.add('hidden');
+            responseTimeDisplay.textContent = "0.00s";
+
+            const numSections = wheelData.length;
+            selectedSectionIndex = Math.floor(Math.random() * numSections);
+
+            const degreesPerSection = 360 / numSections;
+            const targetCenterAngle = (selectedSectionIndex * degreesPerSection) + (degreesPerSection / 2);
+            let degreesToTargetTop = 270 - targetCenterAngle;
+            if (degreesToTargetTop < 0) {
+                degreesToTargetTop += 360;
+            }
+
+            const minRotations = 5;
+            const currentBaseTurns = Math.floor(currentRotation / 360);
+            currentRotation = ((currentBaseTurns + minRotations + 1) * 360) + degreesToTargetTop;
+            
+            canvas.style.transform = `rotate(${currentRotation}deg)`;
+            
+            setTimeout(() => {
+                spinning = false;
+                spinButton.disabled = false;
+                displaySelectedSection();
+            }, 4000);
+        });
+
+        function displaySelectedSection() {
+            const section = wheelData[selectedSectionIndex];
+            questionDisplay.innerHTML = `<span class="text-xl text-blue-700">La flecha marcó la Porción:</span> <span class="font-bold text-2xl text-red-600">${section.name}</span><br>Buscando pregunta...`;
+            currentQuestionIndex = Math.floor(Math.random() * section.questions.length);
+            showQuestion(section.name, currentQuestionIndex);
+        }
+
+        function showQuestion(sectionName, questionIndex) {
+            const section = wheelData.find(s => s.name === sectionName);
+            if (!section || !section.questions[questionIndex]) {
+                questionDisplay.textContent = "Error al cargar la pregunta.";
+                return;
+            }
+
+            const questionObj = section.questions[questionIndex];
+            const themeSubtitle = section.theme ? `<span class="block text-sm font-normal text-gray-500 mb-2">Eje: ${section.theme}</span>` : '';
+            questionDisplay.innerHTML = `<span class="text-xl text-blue-700">Porción N° ${sectionName}</span>${themeSubtitle}${questionObj.question}`;
+            answerOptionsContainer.innerHTML = '';
+            userSelectedAnswers = [];
+            checkAnswerButton.classList.remove('hidden');
+            questionStartTime = performance.now();
+
+            questionObj.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'answer-option';
+                optionDiv.textContent = `${String.fromCharCode(65 + index)}) ${option}`;
+                optionDiv.dataset.index = index;
+                optionDiv.addEventListener('click', () => toggleAnswerSelection(optionDiv, index));
+                answerOptionsContainer.appendChild(optionDiv);
+            });
+        }
+
+        function toggleAnswerSelection(optionDiv, index) {
+            optionDiv.classList.toggle('selected');
+            if (userSelectedAnswers.includes(index)) {
+                userSelectedAnswers = userSelectedAnswers.filter(i => i !== index);
+            } else {
+                userSelectedAnswers.push(index);
+            }
+        }
+
+        checkAnswerButton.addEventListener('click', () => {
+            if (selectedSectionIndex === -1 || currentQuestionIndex === -1) return;
+
+            const section = wheelData[selectedSectionIndex];
+            const questionObj = section.questions[currentQuestionIndex];
+            const correctAnswers = questionObj.correct.sort((a, b) => a - b);
+            const userAnswersSorted = userSelectedAnswers.sort((a, b) => a - b);
+
+            const endTime = performance.now();
+            const timeTaken = ((endTime - questionStartTime) / 1000).toFixed(2);
+            responseTimeDisplay.textContent = `${timeTaken}s`;
+
+            let message = "";
+
+            Array.from(answerOptionsContainer.children).forEach(optionDiv => {
+                const optionIndex = parseInt(optionDiv.dataset.index);
+                optionDiv.classList.remove('selected');
+                if (correctAnswers.includes(optionIndex)) {
+                    optionDiv.classList.add('correct');
+                } else {
+                    optionDiv.classList.add('incorrect');
+                }
+            });
+
+            if (JSON.stringify(correctAnswers) === JSON.stringify(userAnswersSorted)) {
+                message = "¡Respuesta CORRECTA! 🏅🏃‍♂️✨";
+                correctAnswersOverall++;
+                correctAnswersInRound++;
+                questionsAnswered++;
+
+                if (correctAnswersOverall % 10 === 0 && correctAnswersOverall !== 0) {
+                    score += 100;
+                    showMessage("¡Excelente! 🎉 ¡Ganaste 100 puntos extra por racha deportiva!");
+                } else {
+                    score += 10;
+                }
+            } else {
+                message = "Respuesta INCORRECTA. 😔 La opción correcta era: ";
+                correctAnswers.forEach((idx, i) => {
+                    message += `${String.fromCharCode(65 + idx)}) ${questionObj.options[idx]}${i < correctAnswers.length - 1 ? ', ' : '.'}`;
+                });
+                incorrectAnswersInRound++;
+                questionsAnswered++;
+            }
+
+            updateGameStats();
+            showMessage(message);
+            checkAnswerButton.classList.add('hidden');
+        });
+
+        function updateGameStats() {
+            scoreDisplay.textContent = score;
+            questionCounterDisplay.textContent = questionsAnswered;
+            correctCountDisplay.textContent = correctAnswersInRound;
+            incorrectCountDisplay.textContent = incorrectAnswersInRound;
+        }
+
+        function saveGameConfiguration() {
+            try {
+                const configToSave = { gameTitle: gameTitle, wheelData: wheelData };
+                localStorage.setItem('ruedaEducacionFisicaConfig', JSON.stringify(configToSave));
+                showMessage("¡Configuración guardada exitosamente!");
+            } catch (e) {
+                showMessage("Error al guardar: " + e.message);
+            }
+        }
+
+        function loadGameConfiguration() {
+            try {
+                const savedConfig = localStorage.getItem('ruedaEducacionFisicaConfig');
+                if (savedConfig) {
+                    const parsedConfig = JSON.parse(savedConfig);
+                    gameTitle = parsedConfig.gameTitle || "FERIA DE CIENCIAS: NTICx Y ED. FÍSICA";
+                    wheelData = parsedConfig.wheelData || wheelData;
+                    gameTitleElement.textContent = gameTitle;
+                    drawWheel();
+                }
+            } catch (e) {
+                console.error("Error cargando configuración inicial.");
+            }
+        }
+
+        closeEditModalButton.addEventListener('click', () => { editModal.style.display = 'none'; });
+        messageOkButton.addEventListener('click', () => { messageModal.style.display = 'none'; });
+
+        authenticatePasswordButton.addEventListener('click', () => {
+            if (editPasswordInput.value === EDIT_PASSWORD) {
+                passwordSection.classList.add('hidden');
+                editorContent.classList.remove('hidden');
+                setupEditUI();
+            } else {
+                showMessage("Contraseña incorrecta.");
+            }
+        });
+
+        saveEditsButton.addEventListener('click', () => {
+            applyEdits();
+            saveGameConfiguration();
+            editModal.style.display = 'none';
+            drawWheel();
+        });
+
+        downloadEditorConfigButton.addEventListener('click', () => {
+            exportGameConfigAsJson();
+        });
+
+        cancelEditsButton.addEventListener('click', () => {
+            editModal.style.display = 'none';
+            loadGameConfiguration();
+            drawWheel();
+        });
+
+        function setupEditUI() {
+            editGameTitleInput.value = gameTitle;
+            sectionsEditor.innerHTML = '';
+            wheelData.forEach((section, index) => {
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'bg-gray-50 p-3 rounded-lg border border-gray-200';
+                sectionDiv.innerHTML = `
+                    <h4 class="font-bold text-md mb-2">Porción ${index + 1}</h4>
+                    <label class="block text-sm text-gray-600">Número / Identificador:</label>
+                    <input type="text" class="section-name w-full p-2 border rounded-md mb-2" value="${section.name}" data-index="${index}">
+                    <label class="block text-sm text-gray-600">Color de fondo:</label>
+                    <input type="color" class="section-color w-full h-10 p-1 border rounded-md mb-2" value="${section.color}" data-index="${index}">
+                    <label class="block text-sm text-gray-600">Color de texto:</label>
+                    <select class="section-text-color w-full p-2 border rounded-md" data-index="${index}">
+                        <option value="#FFFFFF" ${section.textColor === '#FFFFFF' ? 'selected' : ''}>Blanco</option>
+                        <option value="#000000" ${section.textColor === '#000000' ? 'selected' : ''}>Negro</option>
+                    </select>
+                `;
+                sectionsEditor.appendChild(sectionDiv);
+            });
+
+            selectSectionForQuestions.innerHTML = '';
+            wheelData.forEach((section, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = `Porción ${section.name} - ${section.theme || ''}`;
+                selectSectionForQuestions.appendChild(option);
+            });
+            loadQuestionsForEdit(0);
+
+            selectSectionForQuestions.addEventListener('change', (event) => {
+                loadQuestionsForEdit(parseInt(event.target.value));
+            });
+        }
+
+        function loadQuestionsForEdit(sectionIndex) {
+            questionsEditor.innerHTML = '';
+            const section = wheelData[sectionIndex];
+
+            section.questions.forEach((q, qIndex) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'bg-white p-4 rounded-lg border border-gray-200 mb-4';
+                questionDiv.innerHTML = `
+                    <h5 class="font-semibold text-lg mb-2 text-gray-700">Pregunta ${qIndex + 1}</h5>
+                    <textarea class="edit-question-text w-full p-2 border rounded-md mb-2" data-section-index="${sectionIndex}" data-question-index="${qIndex}">${q.question}</textarea>
+                    <div class="answer-options-editor" data-section-index="${sectionIndex}" data-question-index="${qIndex}"></div>
+                `;
+
+                const optionsEditor = questionDiv.querySelector('.answer-options-editor');
+                q.options.forEach((optionText, optIndex) => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'flex items-center gap-2 mb-1';
+                    optionDiv.innerHTML = `
+                        <input type="checkbox" class="edit-answer-correct-checkbox" id="correct-opt-${sectionIndex}-${qIndex}-${optIndex}" data-section-index="${sectionIndex}" data-question-index="${qIndex}" data-option-index="${optIndex}" ${q.correct.includes(optIndex) ? 'checked' : ''}>
+                        <input type="text" class="edit-answer-text flex-grow p-1 border rounded-md" value="${optionText}" data-section-index="${sectionIndex}" data-question-index="${qIndex}" data-option-index="${optIndex}">
+                    `;
+                    optionsEditor.appendChild(optionDiv);
+                });
+                questionsEditor.appendChild(questionDiv);
+            });
+        }
+
+        function applyEdits() {
+            gameTitle = editGameTitleInput.value;
+            gameTitleElement.textContent = gameTitle;
+
+            document.querySelectorAll('.section-name').forEach(input => {
+                const index = parseInt(input.dataset.index);
+                wheelData[index].name = input.value;
+            });
+            document.querySelectorAll('.section-color').forEach(input => {
+                const index = parseInt(input.dataset.index);
+                wheelData[index].color = input.value;
+            });
+            document.querySelectorAll('.section-text-color').forEach(select => {
+                const index = parseInt(select.dataset.index);
+                wheelData[index].textColor = select.value;
+            });
+
+            document.querySelectorAll('.edit-question-text').forEach(textarea => {
+                const sIndex = parseInt(textarea.dataset.sectionIndex);
+                const qIndex = parseInt(textarea.dataset.questionIndex);
+                wheelData[sIndex].questions[qIndex].question = textarea.value;
+            });
+
+            document.querySelectorAll('.answer-options-editor').forEach(optionsContainer => {
+                const sIndex = parseInt(optionsContainer.dataset.sectionIndex);
+                const qIndex = parseInt(optionsContainer.dataset.questionIndex);
+                const currentQuestion = wheelData[sIndex].questions[qIndex];
+                currentQuestion.options = [];
+                currentQuestion.correct = [];
+
+                Array.from(optionsContainer.children).forEach(optionDiv => {
+                    const checkbox = optionDiv.querySelector('.edit-answer-correct-checkbox');
+                    const textInput = optionDiv.querySelector('.edit-answer-text');
+                    const optIndex = parseInt(checkbox.dataset.optionIndex);
+
+                    currentQuestion.options[optIndex] = textInput.value;
+                    if (checkbox.checked) {
+                        currentQuestion.correct.push(optIndex);
+                    }
+                });
+            });
+        }
+
+        function exportGameConfigAsJson() {
+            const configToExport = { gameTitle: gameTitle, wheelData: wheelData };
+            const jsonContent = JSON.stringify(configToExport, null, 2);
+            const blob = new Blob([jsonContent], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'ruleta_educacion_fisica_ees3.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        managePasswordsButton.addEventListener('click', () => {
+            managePasswordsModal.style.display = 'flex';
+            editGamePasswordInput.value = EDIT_PASSWORD;
+        });
+
+        saveNewPasswordsButton.addEventListener('click', () => {
+            EDIT_PASSWORD = editGamePasswordInput.value;
+            SAVE_PASSWORD = editGamePasswordInput.value;
+            EXPORT_PASSWORD = editGamePasswordInput.value;
+            MANAGE_PASSWORDS_PASSWORD = editGamePasswordInput.value;
+            showMessage("Contraseñas actualizadas.");
+            managePasswordsModal.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
